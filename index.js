@@ -1,0 +1,28 @@
+// Initialize Env Variables
+require("dotenv").config();
+
+// Initialize DB Connection
+require("./config/database");
+
+// Get Env Variables for Express Server
+const config = require("./config/config").getConfig();
+const PORT = config.PORT;
+
+console.log("✔ Bootstrapping Application");
+console.log(`✔ Mode: ${config.MODE}`);
+console.log(`✔ Port: ${PORT}`);
+
+const { server } = require("./config/server");
+
+server
+  .listen(PORT)
+  .on("error", (err) => {
+    console.log("✘ Application failed to start");
+    console.error("✘", err.message);
+    process.exit(0);
+  })
+  .on("listening", () => {
+    console.log("✔ Application Started");
+  });
+
+module.exports = { server };
